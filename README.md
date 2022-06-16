@@ -63,6 +63,11 @@ MYSQL_DATABASE=development
 
 <img width="500" alt="스크린샷 2022-06-15 오후 10 15 40" src="https://user-images.githubusercontent.com/67570061/173836572-d2241211-7bd7-41df-af94-ee1885f1ce7b.png">
 
+## 엔티티 설계
+
+우선 외래키관계에 있는 모든 컬럼을 연관관계로 설정하였다.
+하지만 개발이후 불필요한 연관관계인 경우 제거하는 것이 의존성 관리에 더 좋다고 생각합니다.
+
 ## Commit Message Convention
 
 - `feat` : 새로운 기능 추가
