@@ -1,13 +1,15 @@
-import { Column, Entity } from 'typeorm';
+import { User } from '../user/user.entity';
+import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../common/BaseEntity';
+import { JobVacancy } from '../job-vacancy/job-vacancy.entity';
 
 @Entity({ name: 'job_application' })
 export class JobApplication extends BaseEntity {
-  // 추후 필요시 유저 엔티티 연결
-  @Column()
-  userId: number;
+  @ManyToOne(() => User, { lazy: true })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: User;
 
-  // 추후 필요시 채용공고(job_vacancy) 엔티티와 연결
-  @Column()
-  jobVacancyId: number;
+  @ManyToOne(() => JobVacancy, { lazy: true })
+  @JoinColumn({ name: 'job_vacancy_id', referencedColumnName: 'id' })
+  jobVacancy: JobVacancy;
 }

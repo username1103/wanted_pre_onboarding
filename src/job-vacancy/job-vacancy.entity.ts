@@ -1,11 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Company } from '../company/company.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'job_vacancy' })
 export class JobVacancy extends BaseEntity {
-  // 추후 연관관계 필요시 설정
-  @Column()
-  companyId: number;
+  @ManyToOne(() => Company, { lazy: true })
+  @JoinColumn({ name: 'company_id', referencedColumnName: 'id' })
+  company: Company;
 
   @Column({ type: 'varchar', length: 50, comment: '채용포지션' })
   jobPosition: string;
