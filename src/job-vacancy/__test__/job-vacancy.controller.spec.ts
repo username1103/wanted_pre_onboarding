@@ -61,7 +61,7 @@ describe('JobVacancy Controller Spec', () => {
         status: 'OK',
         message: '',
         data: {
-          job_vacancy_id: expect.any(Number),
+          jobVacancyId: expect.any(Number),
         },
       });
     });
