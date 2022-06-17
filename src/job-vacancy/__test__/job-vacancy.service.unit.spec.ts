@@ -1,5 +1,5 @@
 import { getCompany } from '../../company/__test__/company.fixture';
-import { anyNumber, anyOfClass, instance, mock, reset, when } from 'ts-mockito';
+import { anyNumber, anyOfClass, anything, instance, mock, reset, when } from 'ts-mockito';
 import { CompanyRepository } from '../../company/company.respository';
 import { CreateJobVacancy } from '../dto/create-job-vacancy';
 import { JobVacancy } from '../job-vacancy.entity';
@@ -130,6 +130,43 @@ describe('Job Vacancy Service Unit Test', () => {
         jobPosition: 'change',
         technology: 'technology',
       });
+
+      // then
+      await expect(result).rejects.toThrow(JobVacancyNotFoundException);
+    });
+  });
+
+  describe('delete', () => {
+    test('해당하는 채용공고가 삭제되는가', async () => {
+      // given
+      const jobVacancyFixture = getJobVacancy(1);
+      companyRepository = mock(CompanyRepository);
+
+      jobVacancyRepository = mock(JobVacancyRepository);
+      when(jobVacancyRepository.delete(anything())).thenResolve(undefined);
+      when(jobVacancyRepository.findById(jobVacancyFixture.id)).thenResolve(jobVacancyFixture);
+
+      sut = new JobVacancyService(instance(jobVacancyRepository), instance(companyRepository));
+
+      // when
+      const result = await sut.delete(jobVacancyFixture.id);
+
+      // then
+      expect(result).toBeUndefined();
+    });
+
+    test('해당하는 채용공고가 없으면 JobVacancyNotFoundException이 발생하는가', async () => {
+      // given
+      companyRepository = mock(CompanyRepository);
+
+      jobVacancyRepository = mock(JobVacancyRepository);
+      when(jobVacancyRepository.delete(anything())).thenResolve(undefined);
+      when(jobVacancyRepository.findById(anyNumber())).thenResolve(null);
+
+      sut = new JobVacancyService(instance(jobVacancyRepository), instance(companyRepository));
+
+      // when
+      const result = sut.delete(1);
 
       // then
       await expect(result).rejects.toThrow(JobVacancyNotFoundException);
