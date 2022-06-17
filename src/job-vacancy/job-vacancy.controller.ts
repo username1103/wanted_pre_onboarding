@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JobVacancyNotFoundException } from '../common/exception/JobVacancyNotFoundException';
 import { ApiErrorResponse } from '../common/decorator/api-error-response.decorator';
@@ -9,11 +9,17 @@ import { CreateJobVacancy } from './dto/create-job-vacancy';
 import { JobVacancyId } from './dto/job-vacacncy-id';
 import { JobVacancyService } from './job-vacancy.service';
 import { UpdateJobVacancy } from './dto/update-job-vacancy';
+import { SearchJobVacancy } from './dto/serach-job-vacancy';
+import { JobVacancyRepository } from './job-vacancy.repository';
+import { SearchJobVacancyDto } from './dto/search-job-vacancy.dto';
 
 @Controller('/job-vacancy')
 @ApiTags('JobVacancy')
 export class JobVacancyController {
-  constructor(private readonly jobVacancyService: JobVacancyService) {}
+  constructor(
+    private readonly jobVacancyService: JobVacancyService,
+    private readonly jobVacancyRepository: JobVacancyRepository,
+  ) {}
 
   @Post()
   @ApiSuccessResponse(HttpStatus.CREATED, JobVacancyId)
@@ -36,5 +42,13 @@ export class JobVacancyController {
   @ApiErrorResponse(new JobVacancyNotFoundException())
   async delete(@Param('jobVacancyId', ParseIntPipe) JobVacancyId: string) {
     await this.jobVacancyService.delete(+JobVacancyId);
+  }
+
+  @Get()
+  @ApiSuccessResponse(HttpStatus.OK, [SearchJobVacancyDto])
+  async search(@Query() query?: SearchJobVacancy) {
+    const results = await this.jobVacancyRepository.serach(query);
+
+    return ResponseEntity.OK_WITH_DATA(await Promise.all(results.map((result) => SearchJobVacancyDto.of(result))));
   }
 }

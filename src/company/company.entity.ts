@@ -15,7 +15,7 @@ export class Company extends BaseEntity {
 
   createJobVacancy({ jobPosition, employmentCompensation, content, technology }: createJobVacancy): JobVacancy {
     const jobVacancy = new JobVacancy();
-    jobVacancy.company = this;
+    jobVacancy.company = Promise.resolve(this);
     jobVacancy.employmentCompensation = employmentCompensation;
     jobVacancy.jobPosition = jobPosition;
     jobVacancy.content = content;

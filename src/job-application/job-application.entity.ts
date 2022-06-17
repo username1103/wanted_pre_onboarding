@@ -7,9 +7,9 @@ import { JobVacancy } from '../job-vacancy/job-vacancy.entity';
 export class JobApplication extends BaseEntity {
   @ManyToOne(() => User, { lazy: true })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user: User;
+  user: Promise<User>;
 
   @ManyToOne(() => JobVacancy, { lazy: true })
   @JoinColumn({ name: 'job_vacancy_id', referencedColumnName: 'id' })
-  jobVacancy: JobVacancy;
+  jobVacancy: Promise<JobVacancy>;
 }

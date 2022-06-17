@@ -94,7 +94,7 @@ describe('JobVacancy Controller Spec', () => {
       await companyRepository.save(company);
 
       const jobVacancy = new JobVacancy();
-      jobVacancy.company = company;
+      jobVacancy.company = Promise.resolve(company);
       jobVacancy.content = 'content';
       jobVacancy.employmentCompensation = 100000;
       jobVacancy.jobPosition = 'jobPosition';
@@ -142,7 +142,7 @@ describe('JobVacancy Controller Spec', () => {
       await companyRepository.save(company);
 
       const jobVacancy = new JobVacancy();
-      jobVacancy.company = company;
+      jobVacancy.company = Promise.resolve(company);
       jobVacancy.content = 'content';
       jobVacancy.employmentCompensation = 100000;
       jobVacancy.jobPosition = 'jobPosition';

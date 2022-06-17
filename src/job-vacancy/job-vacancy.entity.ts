@@ -6,7 +6,7 @@ import { BaseEntity } from '../common/BaseEntity';
 export class JobVacancy extends BaseEntity {
   @ManyToOne(() => Company, { lazy: true })
   @JoinColumn({ name: 'company_id', referencedColumnName: 'id' })
-  company: Company;
+  company: Promise<Company>;
 
   @Column({ type: 'varchar', length: 50, comment: '채용포지션' })
   jobPosition: string;
