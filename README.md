@@ -72,12 +72,13 @@ MYSQL_DATABASE=development
 
 모든 회사의 채용공고를 지원하기 때문에 company/:companyId/job-vacancy로 계층적인 URL이 아닌 별도로 분리하였습니다.
 
-- POST /v1/job-vacancy 채용공고 등록
-- PUT /v1/job-vacancy/:jobVacancyId 채용공고 수정
-- GET /v1/job-vacancy 채용공고 목록 조회
-- GET /v1/job-vacancy/:jobVacancyId 채용공고 상세 조회
+- POST /v1/job-vacancies 채용공고 등록
+- PUT /v1/job-vacancies/:jobVacancyId 채용공고 수정
+- GET /v1/job-vacancies 채용공고 목록 조회
+- GET /v1/job-vacancies/:jobVacancyId 채용공고 상세 조회
+- DELETE /v1/job-vacancies/:jobVacancyId 채용공고 삭제
 
-- POST /v1/job-application 채용공고 지원
+- POST /v1/job-applications 채용공고 지원
 
 ## Commit Message Convention
 
