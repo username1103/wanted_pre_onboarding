@@ -25,7 +25,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.mysqlConfigService.dbName,
       logging: this.appConfigService.isDevelopment() ? 'all' : ['error', 'warn'],
       entities: [entityPath],
-      autoLoadEntities: true,
+      dropSchema: this.appConfigService.isTest() ? true : false,
       synchronize: this.appConfigService.isProduction() ? false : true,
       namingStrategy: new SnakeNamingStrategy(),
     };
