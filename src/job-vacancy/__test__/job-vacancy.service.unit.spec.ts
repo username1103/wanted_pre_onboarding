@@ -49,7 +49,6 @@ describe('Job Vacancy Service Unit Test', () => {
 
       // then
       expect(result).toMatchObject({
-        company: companyFixture,
         id: 1,
         content: 'content',
         employmentCompensation: 10000,
@@ -58,6 +57,7 @@ describe('Job Vacancy Service Unit Test', () => {
         updatedAt: expect.any(Date),
         createdAt: expect.any(Date),
       });
+      await expect(result.company).resolves.toMatchObject(companyFixture);
     });
 
     test('해당하는 회사가 없는 경우, CompanyNotFoundException을 반환하는가', async () => {
