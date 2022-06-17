@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JobVacancyNotFoundException } from '../common/exception/JobVacancyNotFoundException';
 import { ApiErrorResponse } from '../common/decorator/api-error-response.decorator';
@@ -29,5 +29,12 @@ export class JobVacancyController {
   @ApiErrorResponse(new JobVacancyNotFoundException())
   async update(@Param('jobVacancyId', ParseIntPipe) jobVacancyId: string, @Body() body: UpdateJobVacancy) {
     await this.jobVacancyService.update(+jobVacancyId, body);
+  }
+
+  @Delete('/:jobVacancyId')
+  @ApiSuccessResponse(HttpStatus.NO_CONTENT)
+  @ApiErrorResponse(new JobVacancyNotFoundException())
+  async delete(@Param('jobVacancyId', ParseIntPipe) JobVacancyId: string) {
+    await this.jobVacancyService.delete(+JobVacancyId);
   }
 }

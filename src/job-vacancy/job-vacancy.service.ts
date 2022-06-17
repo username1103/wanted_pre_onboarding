@@ -36,4 +36,13 @@ export class JobVacancyService {
 
     await this.jobVacancyRepository.save(jobVacancy);
   }
+
+  async delete(jobVacancyId: number) {
+    const jobVacancy = await this.jobVacancyRepository.findById(jobVacancyId);
+    if (!jobVacancy) {
+      throw new JobVacancyNotFoundException();
+    }
+
+    await this.jobVacancyRepository.delete({ id: jobVacancyId });
+  }
 }

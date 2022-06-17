@@ -131,4 +131,39 @@ describe('JobVacancy Controller Spec', () => {
       await expect(result).rejects.toThrow(JobVacancyNotFoundException);
     });
   });
+
+  describe('delete', () => {
+    test('해당하는 채용공고가 삭제되는가', async () => {
+      // given
+      const company = new Company();
+      company.name = 'name';
+      company.area = 'area';
+      company.country = 'country';
+      await companyRepository.save(company);
+
+      const jobVacancy = new JobVacancy();
+      jobVacancy.company = company;
+      jobVacancy.content = 'content';
+      jobVacancy.employmentCompensation = 100000;
+      jobVacancy.jobPosition = 'jobPosition';
+      jobVacancy.technology = 'technology';
+      await jobVacancyRepository.save(jobVacancy);
+
+      // when
+      const result = await jobVacancyController.delete(jobVacancy.id + '');
+
+      // then
+      expect(result).toBeUndefined();
+    });
+
+    test('해당하는 채용공고가 없으면 JobVacancyNotFoundException이 발생하는가', async () => {
+      // given
+
+      // when
+      const result = jobVacancyController.delete('123');
+
+      // then
+      await expect(result).rejects.toThrow(JobVacancyNotFoundException);
+    });
+  });
 });
