@@ -6,6 +6,8 @@ import { JobVacancy } from '../job-vacancy.entity';
 import { JobVacancyRepository } from '../job-vacancy.repository';
 import { JobVacancyService } from '../job-vacancy.service';
 import { CompanyNotFoudnException } from '../../common/exception/CompanyNotFoundException';
+import { getJobVacancy } from './job-vacancy.fixture';
+import { JobVacancyNotFoundException } from '../../common/exception/JobVacancyNotFoundException';
 
 describe('Job Vacancy Service Unit Test', () => {
   let sut: JobVacancyService;
@@ -85,6 +87,52 @@ describe('Job Vacancy Service Unit Test', () => {
 
       // then
       await expect(result).rejects.toThrow(CompanyNotFoudnException);
+    });
+  });
+  describe('update', () => {
+    test('해당하는 채용공고의 정보가 변경되는가', async () => {
+      // given
+      const jobVacancyFixture = getJobVacancy(1);
+      companyRepository = mock(CompanyRepository);
+
+      jobVacancyRepository = mock(JobVacancyRepository);
+      when(jobVacancyRepository.save(anyOfClass(JobVacancy))).thenResolve(undefined);
+      when(jobVacancyRepository.findById(jobVacancyFixture.id)).thenResolve(jobVacancyFixture);
+
+      sut = new JobVacancyService(instance(jobVacancyRepository), instance(companyRepository));
+
+      // when
+      const result = await sut.update(jobVacancyFixture.id, {
+        content: 'change',
+        employmentCompensation: 100000,
+        jobPosition: 'change',
+        technology: 'technology',
+      });
+
+      // then
+      expect(result).toBeUndefined();
+    });
+
+    test('해당하는 채용공고가 없으면 JobVacancyNotFoundException이 발생하는가', async () => {
+      // given
+      companyRepository = mock(CompanyRepository);
+
+      jobVacancyRepository = mock(JobVacancyRepository);
+      when(jobVacancyRepository.save(anyOfClass(JobVacancy))).thenResolve(undefined);
+      when(jobVacancyRepository.findById(anyNumber())).thenResolve(null);
+
+      sut = new JobVacancyService(instance(jobVacancyRepository), instance(companyRepository));
+
+      // when
+      const result = sut.update(1, {
+        content: 'change',
+        employmentCompensation: 100000,
+        jobPosition: 'change',
+        technology: 'technology',
+      });
+
+      // then
+      await expect(result).rejects.toThrow(JobVacancyNotFoundException);
     });
   });
 });

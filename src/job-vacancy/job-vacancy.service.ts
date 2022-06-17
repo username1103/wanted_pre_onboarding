@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { JobVacancyNotFoundException } from '../common/exception/JobVacancyNotFoundException';
 import { CompanyNotFoudnException } from '../common/exception/CompanyNotFoundException';
 import { CompanyRepository } from '../company/company.respository';
 import { CreateJobVacancy } from './dto/create-job-vacancy';
+import { UpdateJobVacancy } from './dto/update-job-vacancy';
 import { JobVacancyRepository } from './job-vacancy.repository';
 
 @Injectable()
@@ -22,5 +24,16 @@ export class JobVacancyService {
     await this.jobVacancyRepository.save(jobVacancy);
 
     return jobVacancy;
+  }
+
+  async update(jobVacancyId: number, updateInfo: UpdateJobVacancy) {
+    const jobVacancy = await this.jobVacancyRepository.findById(jobVacancyId);
+    if (!jobVacancy) {
+      throw new JobVacancyNotFoundException();
+    }
+
+    jobVacancy.update(updateInfo);
+
+    await this.jobVacancyRepository.save(jobVacancy);
   }
 }

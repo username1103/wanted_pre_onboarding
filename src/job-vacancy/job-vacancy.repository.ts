@@ -7,4 +7,8 @@ export class JobVacancyRepository extends Repository<JobVacancy> {
   constructor(private readonly dataSource: DataSource) {
     super(JobVacancy, dataSource.createEntityManager(), dataSource.createQueryRunner());
   }
+
+  findById(jobVacacncyId: number) {
+    return this.findOneBy({ id: jobVacacncyId });
+  }
 }
