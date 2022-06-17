@@ -12,6 +12,7 @@ import { UpdateJobVacancy } from './dto/update-job-vacancy';
 import { SearchJobVacancy } from './dto/serach-job-vacancy';
 import { JobVacancyRepository } from './job-vacancy.repository';
 import { SearchJobVacancyDto } from './dto/search-job-vacancy.dto';
+import { ReadJobVacancy } from './dto/read-job-vacancy';
 
 @Controller('/job-vacancy')
 @ApiTags('JobVacancy')
@@ -50,5 +51,13 @@ export class JobVacancyController {
     const results = await this.jobVacancyRepository.serach(query);
 
     return ResponseEntity.OK_WITH_DATA(await Promise.all(results.map((result) => SearchJobVacancyDto.of(result))));
+  }
+
+  @Get('/:jobVacancyId')
+  @ApiSuccessResponse(HttpStatus.OK, ReadJobVacancy)
+  async get(@Param('jobVacancyId', ParseIntPipe) jobVacancyId: string) {
+    const jobVacancy = await this.jobVacancyService.get(+jobVacancyId);
+
+    return ResponseEntity.OK_WITH_DATA(jobVacancy);
   }
 }
