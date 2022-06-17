@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppConfigService } from './common/config/app/config.service';
 import { ResponseEntity } from './common/response/ResponseEntity';
+import { JobApplicationModule } from './job-application/job-application.module';
 import { JobVacancyModule } from './job-vacancy/job-vacancy.module';
 
 export const setSwagger = (app: INestApplication) => {
@@ -14,7 +15,7 @@ export const setSwagger = (app: INestApplication) => {
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-    include: [JobVacancyModule],
+    include: [JobVacancyModule, JobApplicationModule],
     extraModels: [ResponseEntity],
   });
 

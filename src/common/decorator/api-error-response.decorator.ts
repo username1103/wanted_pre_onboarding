@@ -25,7 +25,7 @@ export function ApiErrorResponse(...errors: HttpException[]) {
         },
       };
     } else {
-      apiResponses[status].content.examples[response.errorCode] = {
+      apiResponses[status].content['application/json'].examples[response.errorCode] = {
         description: response.message,
         value: instanceToPlain(ResponseEntity.ERROR_WITH_DATA(response.message, response.errorCode, response.data)),
       };

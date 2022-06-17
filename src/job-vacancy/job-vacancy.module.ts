@@ -8,6 +8,6 @@ import { JobVacancyService } from './job-vacancy.service';
   imports: [CompanyModule],
   controllers: [JobVacancyController],
   providers: [JobVacancyRepository, JobVacancyService],
-  exports: [],
+  exports: [JobVacancyRepository],
 })
 export class JobVacancyModule {}
