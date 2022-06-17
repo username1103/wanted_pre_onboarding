@@ -14,7 +14,7 @@ import { JobVacancyRepository } from './job-vacancy.repository';
 import { SearchJobVacancyDto } from './dto/search-job-vacancy.dto';
 import { ReadJobVacancy } from './dto/read-job-vacancy';
 
-@Controller('/job-vacancy')
+@Controller('/job-vacancies')
 @ApiTags('JobVacancy')
 export class JobVacancyController {
   constructor(
