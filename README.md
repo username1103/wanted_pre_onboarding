@@ -68,6 +68,17 @@ MYSQL_DATABASE=development
 우선 외래키관계에 있는 모든 컬럼을 연관관계로 설정하였다.
 하지만 개발이후 불필요한 연관관계인 경우 제거하는 것이 의존성 관리에 더 좋다고 생각합니다.
 
+## RESTAPI 설계
+
+모든 회사의 채용공고를 지원하기 때문에 company/:companyId/job-vacancy로 계층적인 URL이 아닌 별도로 분리하였습니다.
+
+- POST /v1/job-vacancy 채용공고 등록
+- PUT /v1/job-vacancy/:jobVacancyId 채용공고 수정
+- GET /v1/job-vacancy 채용공고 목록 조회
+- GET /v1/job-vacancy/:jobVacancyId 채용공고 상세 조회
+
+- POST /v1/job-application 채용공고 지원
+
 ## Commit Message Convention
 
 - `feat` : 새로운 기능 추가
