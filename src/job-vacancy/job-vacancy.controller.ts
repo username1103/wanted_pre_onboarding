@@ -28,7 +28,7 @@ export class JobVacancyController {
   async create(@Body() body: CreateJobVacancy) {
     const jobVacancy = await this.jobVacancyService.create(body);
 
-    return ResponseEntity.OK_WITH_DATA({ job_vacancy_id: jobVacancy.id });
+    return ResponseEntity.OK_WITH_DATA(JobVacancyId.of(jobVacancy));
   }
 
   @Put('/:jobVacancyId')
