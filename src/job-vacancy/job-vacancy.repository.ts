@@ -13,6 +13,16 @@ export class JobVacancyRepository extends Repository<JobVacancy> {
     return this.findOneBy({ id: jobVacacncyId });
   }
 
+  findByCompanyId(companyId: number) {
+    return this.find({
+      where: {
+        company: {
+          id: companyId,
+        },
+      },
+    });
+  }
+
   serach(searchParams: SearchJobVacancy) {
     const qb = this.createQueryBuilder('jobVacancy').leftJoinAndSelect('jobVacancy.company', 'company');
 

@@ -5,6 +5,7 @@ import { CompanyRepository } from '../company/company.respository';
 import { CreateJobVacancy } from './dto/create-job-vacancy';
 import { UpdateJobVacancy } from './dto/update-job-vacancy';
 import { JobVacancyRepository } from './job-vacancy.repository';
+import { ReadJobVacancy } from './dto/read-job-vacancy';
 
 @Injectable()
 export class JobVacancyService {
@@ -44,5 +45,20 @@ export class JobVacancyService {
     }
 
     await this.jobVacancyRepository.delete({ id: jobVacancyId });
+  }
+
+  async get(jobVacancyId: number) {
+    const jobVacancy = await this.jobVacancyRepository.findById(jobVacancyId);
+    if (!jobVacancy) {
+      throw new JobVacancyNotFoundException();
+    }
+
+    const company = await jobVacancy.company;
+    const ids = await this.jobVacancyRepository.findByCompanyId(company.id);
+
+    return ReadJobVacancy.of(
+      jobVacancy,
+      ids.map((id) => id.id).filter((id) => id !== jobVacancyId),
+    );
   }
 }
