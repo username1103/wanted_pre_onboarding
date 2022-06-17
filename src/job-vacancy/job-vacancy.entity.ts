@@ -19,4 +19,11 @@ export class JobVacancy extends BaseEntity {
 
   @Column({ type: 'varchar', length: 250, comment: '사용기술' })
   technology: string;
+
+  update(updateInfo: { jobPosition: string; employmentCompensation: number; content: string; technology: string }) {
+    this.jobPosition = updateInfo.jobPosition;
+    this.employmentCompensation = updateInfo.employmentCompensation;
+    this.content = updateInfo.content;
+    this.technology = updateInfo.technology;
+  }
 }

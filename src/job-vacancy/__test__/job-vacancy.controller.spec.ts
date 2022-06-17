@@ -9,10 +9,14 @@ import { JobVacancyRepository } from '../job-vacancy.repository';
 import { JobVacancyService } from '../job-vacancy.service';
 import { CompanyRepository } from '../../company/company.respository';
 import { CompanyNotFoudnException } from '../../common/exception/CompanyNotFoundException';
+import { UpdateJobVacancy } from '../dto/update-job-vacancy';
+import { JobVacancy } from '../job-vacancy.entity';
+import { JobVacancyNotFoundException } from '../../common/exception/JobVacancyNotFoundException';
 
 describe('JobVacancy Controller Spec', () => {
   let jobVacancyController: JobVacancyController;
   let companyRepository: CompanyRepository;
+  let jobVacancyRepository: JobVacancyRepository;
   let dataSource: DataSource;
 
   beforeEach(async () => {
@@ -24,6 +28,7 @@ describe('JobVacancy Controller Spec', () => {
 
     jobVacancyController = module.get(JobVacancyController);
     companyRepository = module.get(CompanyRepository);
+    jobVacancyRepository = module.get(JobVacancyRepository);
     dataSource = module.get(DataSource);
   });
 
@@ -76,6 +81,54 @@ describe('JobVacancy Controller Spec', () => {
 
       // then
       await expect(result).rejects.toThrow(CompanyNotFoudnException);
+    });
+  });
+
+  describe('update', () => {
+    test('해당하는 채용공고 내용이 변경되는가', async () => {
+      // given
+      const company = new Company();
+      company.name = 'name';
+      company.area = 'area';
+      company.country = 'country';
+      await companyRepository.save(company);
+
+      const jobVacancy = new JobVacancy();
+      jobVacancy.company = company;
+      jobVacancy.content = 'content';
+      jobVacancy.employmentCompensation = 100000;
+      jobVacancy.jobPosition = 'jobPosition';
+      jobVacancy.technology = 'technology';
+      await jobVacancyRepository.save(jobVacancy);
+
+      const body: UpdateJobVacancy = {
+        content: 'change',
+        employmentCompensation: 100000,
+        jobPosition: 'changePosition',
+        technology: 'technology',
+      };
+
+      // when
+      const result = await jobVacancyController.update(jobVacancy.id + '', body);
+
+      // then
+      expect(result).toBeUndefined();
+    });
+
+    test('해당하는 채용공고가 없으면 JobVacancyNotFoundException이 발생하는가', async () => {
+      // given
+      const body: UpdateJobVacancy = {
+        content: 'change',
+        employmentCompensation: 100000,
+        jobPosition: 'changePosition',
+        technology: 'technology',
+      };
+
+      // when
+      const result = jobVacancyController.update('123', body);
+
+      // then
+      await expect(result).rejects.toThrow(JobVacancyNotFoundException);
     });
   });
 });
